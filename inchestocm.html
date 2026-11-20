@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- this is the page's title -->
+    <title>Inches to Centimeter</title>
+
+    <style>
+        /* this affects everything in the HTML so that they have the same font */
+        * {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+
+        /* this is the font size that the HTML will start with, it will change if it has its own font size in the css. */
+        :root {
+            font-size: 1vw;
+        }
+
+        body {
+            width: 100vw;
+            font-size: large;
+            color: #110000;
+            background-color: #fffefe;
+        }
+
+        .stuff {
+            margin: 0 auto;
+            max-width: 50%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 5rem;
+            display: inline;
+        }
+
+        #input {
+            display: block;
+            width: 100%;
+            height: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            box-sizing: border-box;
+            border: 0.5vw solid black;
+        }
+
+        #output {
+            display: block;
+            width: 100%;
+            height: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            box-sizing: border-box;
+            border: 0.5vw solid black;
+            overflow-wrap: anywhere;
+        }
+
+        /* this aligns the items in the class "bar" so that they are sideways on the page and are centered in the middle.*/
+        .bar {
+            display: flex;
+            gap: 10vw;
+            align-items: center;
+            margin-top: 10vw;
+            margin-bottom: 3vw;
+        }
+
+        /* this makes it so that all the items in the class "bar" take up the same amount of space. */
+        .bar>* {
+            flex: 1;
+        }
+
+        /* this changes the way the button looks */
+        .bar button {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 2.5rem;
+            width: 10rem;
+            height: 10rem;
+            margin: 10px 0;
+            box-sizing: border-box;
+            border: 1vw solid black;
+            border-radius: 50%;
+            background-color: white;
+            color: black;
+        }
+
+        /* this changes the way the button looks after hovering */
+        .bar button:hover {
+            background-color: #cccccc;
+            transition: 2s;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="stuff">
+        <h1>Inches to Centimeter</h1>
+
+        <div class="bar">
+            <div>
+                <!-- this is where you type your inches/centimeters -->
+                <label for="input" id="inputname">Inches</label>
+                <input id="input">
+            </div>
+
+            <div>
+                <!-- this button allows the user to switch between convert to cm and inches. -->
+                <button id="switch">Switch</button>
+            </div>
+
+            <div>
+                <!-- this is the output which is basically the result after converting. -->
+                <span id="outputname">Centimeter</span>
+                <span id="output">0.00</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // This is so the user can switch between whether they want to convert cm or inches.
+        let mode = "cm";
+        let result = 0;
+        // this sets a variable to the HTML element
+        const switchButton = document.getElementById("switch");
+        const input = document.getElementById("input");
+        const inputname = document.getElementById("inputname");
+        const output = document.getElementById("output");
+        const outputname = document.getElementById("outputname");
+        let conversion = 2.54;
+
+        function switchModes() {
+            if (mode == "cm") {
+                mode = "inches";
+                inputname.textContent = "Centimeter";
+                outputname.textContent = "Inches";
+            } else if (mode == "inches") {
+                mode = "cm";
+                inputname.textContent = "Inches";
+                outputname.textContent = "Centimeter";
+            }
+        }
+
+        function convert() {
+            if (mode == "cm") {
+                // this converts the text in the input to a usable number and multiplys it by the conversion rate. If it cant it will just leave 0 as the result.
+                result = parseFloat(input.value) * conversion || 0;
+                // this takes the outputs inner text and changes it to the value of result which we calculated above. the (.tofixed) rounds up the number.
+                output.textContent = result.toFixed(2);
+            } else if (mode == "inches") {
+                result = parseFloat(input.value) / conversion || 0;
+                output.textContent = result.toFixed(2);
+
+                // this rounds down the result then divides it by 12.
+                let feet = Math.floor(result / 12);
+                // this will get the remainding inches after dividing.
+                let inches = result % 12;
+                output.textContent = feet + " ft " + inches.toFixed(2) + " in";
+            }
+        }
+
+        // this checks for an input when you are in the input and then automatically does the conversion.
+        input.addEventListener('input', function (event) {
+            convert();
+        });
+
+        switchButton.addEventListener('click', function (event) {
+            switchModes();
+            convert();
+        });
+    </script>
+</body>
+
+</html>
